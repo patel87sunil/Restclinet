@@ -1,0 +1,144 @@
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Text;
+using Cattel.DTO;
+using Cattel.DataAccess;
+using Cattel.BusinessLogic;
+using Newtonsoft.Json;
+
+namespace Cattel.BusinessLogic
+{
+  public   class cattellead
+    {
+
+
+        public object GetLeadDetailsByLeadID(string aouthkey, string Code, string Message, string LeadNo, string UserName, string LastSyncDate, string StatusCode, string AssignedTo, string IsAssigned, string IsBankEdit, string IsVetEdit, string IsSubVetEdit, string LeadDetailsData, string ContactDetailsData, string GridLeadDetailsData)
+        {
+            try
+            {
+
+                var client = new RestClient();
+                string RequestData;
+                client.EndPoint = System.Configuration.ConfigurationSettings.AppSettings["AjaxUrl"].ToString() + "GetLeadDetailsByLeadID";
+                client.Method = HttpVerb.POST;
+                client.ContentType = "application/json";
+                RequestData = "{'Code':'" + Code + "','Message':'" + Message + "','LeadNo':'" + LeadNo + "','UserName':'" + UserName + "','LastSyncDate':'" + LastSyncDate + "','StatusCode':'" + StatusCode + "','AssignedTo':'" + AssignedTo + "','IsAssigned':'" + IsAssigned + "','IsBankEdit':'" + IsBankEdit + "','IsVetEdit':'" + IsVetEdit + "','IsSubVetEdit':'" + IsSubVetEdit + "','LeadDetailsData':'" + LeadDetailsData + "','ContactDetailsData':'" + ContactDetailsData + "','GridLeadDetailsData':'" + GridLeadDetailsData + "'}";                               
+                client.PostData = RequestData;
+                client.oauthkey = aouthkey;
+                var json = client.MakeRequest();
+                CattleDetails objjosn = (CattleDetails)JsonConvert.DeserializeObject(json, (typeof(CattleDetails)));            
+                
+                return objjosn;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+
+            }
+        }
+
+
+
+
+        public class CattleDetails
+        {
+            public string Code { get; set; }
+            public string Message { get; set; }
+            public string LeadNo { get; set; }
+            public string UserName { get; set; }
+            public string LastSyncDate { get; set; }
+            public string StatusCode { get; set; }
+            public string AssignedTo { get; set; }
+            public string IsAssigned { get; set; }
+            public string IsVetEdit { get; set; }
+            public string IsSubVetEdit { get; set; }
+            public LeadDetailsOffline LeadDetailsData { get; set; }
+            public ContactDetailsOffline ContactDetailsData { get; set; }
+            public List<GridLeadDetailsOffline> GridLeadDetailsData { get; set; }
+        }
+
+        public class LeadDetailsOffline
+        {
+            public string LeadNo { get; set; }
+            public string ProposalNo { get; set; }
+            public string LoanAccountNo { get; set; }
+            public string MaxCapping { get; set; }
+            public string CaseID { get; set; }
+            public string NoOfCattle { get; set; }
+            public string LoanAmountPerCattle { get; set; }
+            public string RMName { get; set; }
+            public string BankRemark { get; set; }
+            public string MandaliCode { get; set; }
+            public string MandaliName { get; set; }
+            public string Tenure { get; set; }
+            public string LeadTimeStamp { get; set; }
+            public string CustomerSignature { get; set; }
+            public BranchDetailsOffline BranchDetailsData { get; set; }
+        }
+
+
+        public class ContactDetailsOffline
+        {
+            public string NameOfBeneficiary { get; set; }
+            public string TelNo { get; set; }
+            public string MobileNo { get; set; }
+            public string Address { get; set; }
+            public string Village { get; set; }
+            public string Taluka { get; set; }
+            public string District { get; set; }
+            public string State { get; set; }
+            public string PinCode { get; set; }
+        }
+
+        public class GridLeadDetailsOffline
+        {
+            public string TagNo { get; set; }
+            public string TaggingDate { get; set; }
+            public string Species { get; set; }
+            public string Breed { get; set; }
+            public string BodyColor { get; set; }
+            public string RightHorn { get; set; }
+            public string LeftHorn { get; set; }
+            public string SwitchOfTail { get; set; }
+            public string AppoxAge { get; set; }
+            public string OtherMarks { get; set; }
+            public string BreedType { get; set; }
+            public string VendorRemark { get; set; }
+            public string Status { get; set; }
+            public string StatusCode { get; set; }
+            public string SubLeadNo { get; set; }
+            public string MilkYield { get; set; }
+            public string NumberOfLactations { get; set; }
+            public string Approval { get; set; }
+            public string ApprovalCode { get; set; }
+            public string AnimalSpeciesID { get; set; }
+            public string AnimalBreedID { get; set; }
+            public string BreedTypeID { get; set; }
+            public string MarketValue { get; set; }
+            public int SubLeadEdit { get; set; }
+            public string FileName1 { get; set; }
+            public string FileName2 { get; set; }
+            public string FileName3 { get; set; }
+            public string FileName4 { get; set; }
+            public string FileName5 { get; set; }
+            public string FileName6 { get; set; }
+            public string FileCount { get; set; }
+        }
+
+
+
+
+        public class BranchDetailsOffline
+        {
+            public string FinancingBank { get; set; }
+            public string BranchCode { get; set; }
+            public string BranchAddress { get; set; }
+        }
+    }
+}
